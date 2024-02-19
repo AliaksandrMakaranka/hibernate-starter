@@ -1,6 +1,7 @@
 package com.skynet;
 
 
+import com.skynet.entity.Role;
 import com.skynet.entity.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -33,6 +34,7 @@ public class HibernateRunner {
                      .lastname("Ali")
                      .birthDate(LocalDate.of(1999, 12, 31))
                      .age(18)
+                     .role(Role.ADMIN)
                     .build();
 
             session.save(user);
