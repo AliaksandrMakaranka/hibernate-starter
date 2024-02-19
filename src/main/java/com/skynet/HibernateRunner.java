@@ -1,6 +1,8 @@
 package com.skynet;
 
 
+import com.skynet.converter.BirthdayConverter;
+import com.skynet.entity.Birthday;
 import com.skynet.entity.Role;
 import com.skynet.entity.User;
 import org.hibernate.Session;
@@ -22,6 +24,7 @@ public class HibernateRunner {
         Configuration configuration = new Configuration();
 //        configuration.setPhysicalNamingStrategy(new CamelCaseToUnderscoresNamingStrategy());
 //        configuration.addAnnotatedClass(User.class);
+        configuration.addAttributeConverter(new BirthdayConverter());
         configuration.configure();
 
         try (SessionFactory sessionFactory = configuration.buildSessionFactory();
@@ -29,11 +32,10 @@ public class HibernateRunner {
             session.beginTransaction();
 
              User user = User.builder()
-                     .username("alex@gmail.com")
+                     .username("alex1@gmail.com")
                      .firstname("Alex")
                      .lastname("Ali")
-                     .birthDate(LocalDate.of(1999, 12, 31))
-                     .age(18)
+                     .birthDate(new Birthday(LocalDate.of(1999, 12, 31)))
                      .role(Role.ADMIN)
                     .build();
 

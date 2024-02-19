@@ -1,5 +1,6 @@
 package com.skynet.entity;
 
+import com.skynet.converter.BirthdayConverter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,9 +21,11 @@ public class User {
     private String username;
     private String firstname;
     private String lastname;
+
+//    @Convert(converter = BirthdayConverter.class)
     @Column(name = "birth_date")
-    private LocalDate birthDate;
-    private Integer age;
+    private Birthday birthDate;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 }
