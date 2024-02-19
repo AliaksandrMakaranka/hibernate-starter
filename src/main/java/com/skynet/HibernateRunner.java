@@ -5,6 +5,7 @@ import com.skynet.converter.BirthdayConverter;
 import com.skynet.entity.Birthday;
 import com.skynet.entity.Role;
 import com.skynet.entity.User;
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -25,6 +26,7 @@ public class HibernateRunner {
 //        configuration.setPhysicalNamingStrategy(new CamelCaseToUnderscoresNamingStrategy());
 //        configuration.addAnnotatedClass(User.class);
         configuration.addAttributeConverter(new BirthdayConverter());
+        configuration.registerTypeOverride(new JsonBinaryType());
         configuration.configure();
 
         try (SessionFactory sessionFactory = configuration.buildSessionFactory();
@@ -32,9 +34,15 @@ public class HibernateRunner {
             session.beginTransaction();
 
              User user = User.builder()
-                     .username("alex1@gmail.com")
-                     .firstname("Alex")
+                     .username("alex@gmail.com")
+                     .firstname("Alexx")
                      .lastname("Ali")
+                     .info("""
+                             {
+                                 "name": "Alex",
+                                 "id": "25"
+                             }
+                             """)
                      .birthDate(new Birthday(LocalDate.of(1999, 12, 31)))
                      .role(Role.ADMIN)
                     .build();
