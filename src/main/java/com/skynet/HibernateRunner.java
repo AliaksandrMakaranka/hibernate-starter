@@ -4,7 +4,6 @@ package com.skynet;
 import com.skynet.entity.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy;
 import org.hibernate.cfg.Configuration;
 
 import java.time.LocalDate;
