@@ -21,7 +21,9 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql:42.7.1'
 
     implementation 'com.vladmihalcea:hibernate-types-52:2.12.1'
+
     implementation 'org.slf4j:slf4j-api:2.0.12'
+    implementation 'org.slf4j:slf4j-reload4j:2.0.12'
 
 
     compileOnly 'org.projectlombok:lombok:1.18.30'
