@@ -51,6 +51,14 @@ public class HibernateRunner {
 //            session.saveOrUpdate(user);
             session.get(User.class, "alex@gmail.com");
 //            session.persist(user);
+
+            User user1 = session.get(User.class, "alex@gmail.com");
+            User user2 = session.get(User.class, "Alex@gmail.com");
+            user1.setLastname("gogi");
+//            session.evict(user1);
+//            session.clear();
+//            session.close();
+
             session.getTransaction().commit();
         }
     }
