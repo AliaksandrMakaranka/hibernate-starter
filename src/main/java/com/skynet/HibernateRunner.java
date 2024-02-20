@@ -5,9 +5,11 @@ import com.skynet.converter.BirthdayConverter;
 import com.skynet.entity.Birthday;
 import com.skynet.entity.Role;
 import com.skynet.entity.User;
+import com.skynet.util.HibernateUtil;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy;
 import org.hibernate.cfg.Configuration;
 
 import java.time.LocalDate;
@@ -15,51 +17,31 @@ import java.time.LocalDate;
 
 public class HibernateRunner {
     public static void main(String[] args) {
-//        BlockingDeque<Connection> poll = null;
-//         Connection connection = poll.take();
-//        SessionFactory
+        User user = User.builder()
+                .username("alex1337@gmail.com")
+                .lastname("Ali")
+                .firstname("Alex")
+                .build();
 
-//        Connection connection = DriverManager
-//                .getConnection("db.url", "db.username", "db.password");
+        try (SessionFactory sessionFactory = HibernateUtil.buildSessionFactory()) {
+            try (Session session1 = sessionFactory.openSession()) {
+                session1.beginTransaction();
 
-        Configuration configuration = new Configuration();
-//        configuration.setPhysicalNamingStrategy(new CamelCaseToUnderscoresNamingStrategy());
-//        configuration.addAnnotatedClass(User.class);
-        configuration.addAttributeConverter(new BirthdayConverter());
-        configuration.registerTypeOverride(new JsonBinaryType());
-        configuration.configure();
+                session1.saveOrUpdate(user);
 
-        try (SessionFactory sessionFactory = configuration.buildSessionFactory();
-             Session session = sessionFactory.openSession()) {
-            session.beginTransaction();
+                session1.getTransaction().commit();
+            }
 
-//             User user = User.builder()
-//                     .username("alex@gmail.com")
-//                     .firstname("Alexx")
-//                     .lastname("Ali")
-//                     .info("""
-//                             {
-//                                 "name": "Alex",
-//                                 "id": "25"
-//                             }
-//                             """)
-//                     .birthDate(new Birthday(LocalDate.of(1999, 12, 31)))
-//                     .role(Role.ADMIN)
-//                    .build();
-//
-//            session.save(user);
-//            session.saveOrUpdate(user);
-            session.get(User.class, "alex@gmail.com");
-//            session.persist(user);
+            try (Session session2 = sessionFactory.openSession()) {
+                session2.beginTransaction();
 
-            User user1 = session.get(User.class, "alex@gmail.com");
-            User user2 = session.get(User.class, "Alex@gmail.com");
-            user1.setLastname("gogi");
-//            session.evict(user1);
-//            session.clear();
-//            session.close();
+//                session2.delete(user);
+//                refresh/merge
+                user.setFirstname("ggg");
+                session2.merge(user);
 
-            session.getTransaction().commit();
+                session2.getTransaction().commit();
+            }
         }
     }
 }
