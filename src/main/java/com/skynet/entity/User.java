@@ -22,12 +22,10 @@ public class User {
 
     @Id
     private String username;
-    private String firstname;
-    private String lastname;
 
-//    @Convert(converter = BirthdayConverter.class)
-    @Column(name = "birth_date")
-    private Birthday birthDate;
+    @Embedded//необязательная аннотация
+    @AttributeOverride(name = "birthDate", column = @Column(name = "birth_date"))
+    private PersonalInfo personalInfo;
 
 //    @Type(type = "com.vladmihalcea.hibernate.type.json.JsonBinaryType")//in hibernate 6 type work different
     @Type(type = "skynet")//in hibernate 6 type work different
