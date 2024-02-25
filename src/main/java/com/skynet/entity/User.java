@@ -20,21 +20,12 @@ import javax.persistence.*;
 @TypeDef(name = "skynet", typeClass = JsonBinaryType.class)
 public class User {
 
-    @Id
-    @GeneratedValue(generator = "user_gen",strategy = GenerationType.TABLE)
-//    @SequenceGenerator(name = "user_gen", sequenceName = "users_id_seq", allocationSize = 1)
-    @TableGenerator(name = "user_gen", table = "all_sequence",
-            pkColumnName = "table_name",
-            valueColumnName = "pk_value",
-            allocationSize = 1)
-    private Long id;
+    @EmbeddedId
+    @AttributeOverride(name = "birthDate", column = @Column(name = "birth_date"))
+    private PersonalInfo personalInfo;
 
     @Column(unique = true)
     private String username;
-
-    @Embedded//необязательная аннотация
-    @AttributeOverride(name = "birthDate", column = @Column(name = "birth_date"))
-    private PersonalInfo personalInfo;
 
 //    @Type(type = "com.vladmihalcea.hibernate.type.json.JsonBinaryType")//in hibernate 6 type work different
     @Type(type = "skynet")//in hibernate 6 type work different
