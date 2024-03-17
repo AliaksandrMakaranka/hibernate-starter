@@ -1,7 +1,12 @@
 package com.skynet;
 
 
+import com.skynet.entity.Company;
 import com.skynet.entity.User;
+import com.skynet.util.HibernateUtil;
+import lombok.Cleanup;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.Test;
 
 import javax.persistence.Column;
@@ -21,10 +26,22 @@ import static java.util.stream.Collectors.joining;
 class HibernateRunnerTest {
 
     @Test
+    void oneToMany() {
+        @Cleanup var sessionFactory = HibernateUtil.buildSessionFactory();
+        @Cleanup var session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        var company = session.get(Company.class, 1);
+
+        session.getTransaction().commit();
+    }
+
+    @Test
     void checkGetReflectionApi() throws SQLException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchFieldException {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = preparedStatement.executeQuery();
         resultSet.getString("username");
+        resultSet.getString("lastname");
         resultSet.getString("lastname");
 
         Class<User> clazz = User.class;
@@ -34,6 +51,7 @@ class HibernateRunnerTest {
         usernameField.setAccessible(true);
         usernameField.set(user, resultSet.getString("username"));
     }
+
     @Test
     void checkReflectionApi() throws SQLException, IllegalAccessException {
         User user = User.builder()
