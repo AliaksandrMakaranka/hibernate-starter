@@ -17,11 +17,11 @@ import java.time.LocalDate;
 public class HibernateRunner {
     public static void main(String[] args) {
         Company company = Company.builder()
-                .name("Cyberdyne System")
+                .name("Skynet")
                 .build();
 
         User user = User.builder()
-                .username("alex@gmail.com")
+                .username("iGar@gmail.com")
                 .personalInfo(PersonalInfo.builder()
                         .lastname("Ali")
                         .firstname("Alex")
@@ -35,12 +35,10 @@ public class HibernateRunner {
             try (session1) {
                 Transaction transaction = session1.beginTransaction();
 
-                User user1 = session1.get(User.class, 1L);
-                Company company1 = user1.getCompany();
-                String name = company1.getName();
-                System.out.println(name);
-//                session1.save(company);
-//                session1.save(user);
+
+                session1.save(user);
+//                User user1 = session1.get(User.class, 1L);
+//                session1.evict(user1);
 
                 session1.getTransaction().commit();
             }
